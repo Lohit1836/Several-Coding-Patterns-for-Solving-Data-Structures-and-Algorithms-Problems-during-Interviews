@@ -28,7 +28,7 @@ function findAvgOfSubarrays(arr, K) {
 }
 
 
-findAvgOfSubarrays([1, 3, 2, 6, -1, 4, 1, 8, 2], 5)
+
 ````
 
 <b>Time complexity: </b> Since for every element of the input array, we are calculating the sum of its next `K` elements, the time complexity of the above algorithm will be `O(N*K)` where `N` is the number of elements in the input array.
@@ -41,6 +41,17 @@ The efficient way to solve this problem would be to visualize each contiguous su
 
 Here is the algorithm for the <b>Sliding Window</b> approach:
 ````js
+
+Example 1:
+Input: nums = [1,12,-5,-6,50,3], k = 4
+Output: 12.75000
+Explanation: Maximum average is (12 - 5 - 6 + 50) / 4 = 51 / 4 = 12.75
+Example 2:
+
+Input: nums = [5], k = 1
+Output: 5.00000
+
+
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
         //get sum for starting window
@@ -68,7 +79,6 @@ class Solution {
     }
 }
 
-findAveragesOfSubarrays([1, 3, 2, 6, -1, 4, 1, 8, 2], 5)//[2.2, 2.8, 2.4, 3.6, 2.8]
 ````
 ## Maximum Sum Subarray of Size K (easy)
 https://leetcode.com/problems/largest-subarray-length-k/
