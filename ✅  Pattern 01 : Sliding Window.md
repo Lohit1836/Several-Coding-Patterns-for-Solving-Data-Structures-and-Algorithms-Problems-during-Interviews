@@ -41,36 +41,31 @@ The efficient way to solve this problem would be to visualize each contiguous su
 
 Here is the algorithm for the <b>Sliding Window</b> approach:
 ````js
-function findAveragesOfSubarrays(arr, k) {
-  //sliding window approach
-  
-  const results = []
-  let windowSum = 0
-  let windowStart = 0
-  
-  for(let windowEnd = 0; windowEnd < arr.length; windowEnd++) {
-    //add the next element
-    windowSum += arr[windowEnd]
-    
-    //slide the window forward 
-    //we don't need to slide if we have not hit the required window size of k
-    
-    if (windowEnd >= k - 1) {
-      //we are **AUTOMATICALLY** returning the window average once we hit the window size of k
-      //and pushing to the output array
-      results.push(windowSum/k)
-      
-      //subtracting the element going out
-      windowSum -= arr[windowStart]
-      
-      //then sliding the window forward
-      windowStart++
-      
-      //adding the element coming in, in the outer/previous loop
-      //and repeating this process until we hit the end of the array
-    } 
-  }
-  return results
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        //get sum for starting window
+        int windowSum = 0;
+        for(int i = 0;i < k;i++){
+            windowSum += nums[i];
+        }
+        int maxSum = windowSum;
+
+        //start sliding window
+        int startIndex = 0;
+        int endIndex = k;
+
+        while(endIndex < nums.length){
+            windowSum -= nums[startIndex];
+            startIndex++;
+
+            windowSum += nums[endIndex];
+            endIndex++;
+
+            maxSum = Math.max(windowSum,maxSum);
+        }
+        //return the average
+        return (double) maxSum/k;  
+    }
 }
 
 findAveragesOfSubarrays([1, 3, 2, 6, -1, 4, 1, 8, 2], 5)//[2.2, 2.8, 2.4, 3.6, 2.8]
