@@ -2,45 +2,6 @@
 In many problems dealing with an array (or a <b>LinkedList</b>), we are asked to find or calculate something among all the contiguous subarrays (or sublists) of a given size. For example, take a look at this problem:
 
 ### Find Averages of Sub Arrays
-https://leetcode.com/problems/maximum-average-subarray-i/
-
-> Given an array, find the average of all contiguous subarrays of size `K` in it.
-
-Lets understand this problem with a real input:
-
-`Array: [1, 3, 2, 6, -1, 4, 1, 8, 2], K=5`
-
-A <b>brute-force</b> algorithm will calculate the sum of every 5-element contiguous subarray of the given array and divide the sum by 5 to find the average.
-
-````js
-function findAvgOfSubarrays(arr, K) {
-  const results = []
-  
-  for(let i = 0; i < arr.length - K + 1; i++) {
-    let sum = 0
-    
-    for(let j = i; j < i + K; j++) {
-      sum += arr[j]
-    }
-    results.push(sum/K)  
-  }
-  return results
-}
-
-
-
-````
-
-<b>Time complexity: </b> Since for every element of the input array, we are calculating the sum of its next `K` elements, the time complexity of the above algorithm will be `O(N*K)` where `N` is the number of elements in the input array.
-
-#### Can we find a better solution? Do you see any inefficiency in the above approach?
-
-The inefficiency is that for any two consecutive subarrays of size `5`, the overlapping part (which will contain four elements) will be evaluated twice.
-
-The efficient way to solve this problem would be to visualize each contiguous subarray as a <i>sliding window</i> of `5` elements. This means that we will slide the window by one element when we move on to the next subarray. To reuse the sum from the previous subarray, we will subtract the element going out of the window and add the element now being included in the <i>sliding window</i>. This will save us from going through the whole subarray to find the sum and, as a result, the algorithm complexity will reduce to `O(N)`.
-
-Here is the algorithm for the <b>Sliding Window</b> approach:
-````js
 
 Example 1:
 Input: nums = [1,12,-5,-6,50,3], k = 4
@@ -50,7 +11,21 @@ Example 2:
 
 Input: nums = [5], k = 1
 Output: 5.00000
+https://leetcode.com/problems/maximum-average-subarray-i/
 
+#### Can we find a better solution? Do you see any inefficiency in the above approach?
+
+The inefficiency is that for any two consecutive subarrays of size `5`, the overlapping part (which will contain four elements) will be evaluated twice.
+
+The efficient way to solve this problem would be to visualize each contiguous subarray as a <i>sliding window</i> of `4` elements. This means that we will slide the window by one element when we move on to the next subarray. To reuse the sum from the previous subarray, we will subtract the element going out of the window and add the element now being included in the <i>sliding window</i>. This will save us from going through the whole subarray to find the sum and, as a result, the algorithm complexity will reduce to `O(N)`.
+
+Here is the algorithm for the <b>Sliding Window</b> approach:
+steps:
+✅ 1️⃣ Take first window sum
+✅ 2️⃣ Slide (remove left, add right)
+✅ 3️⃣ Track maximum
+
+````js
 
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
