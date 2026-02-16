@@ -130,7 +130,7 @@ maxSubarrayOfSizeK([2, 3, 4, 1, 5], 2)//7
 - The time complexity of the above algorithm will be `O(N)`
 - The space complexity of the above algorithm will be `O(1)`
 
-## Smallest Subarray with a given sum (easy)
+## 3)Smallest Subarray with a given sum (easy)
 https://leetcode.com/problems/minimum-size-subarray-sum/
 > Given an array of positive numbers and a positive number `S`, find the length of the <b>smallest contiguous subarray whose sum is greater than or equal to `S`</b>. 
 > 
@@ -146,38 +146,25 @@ This problem follows the <b>Sliding Window pattern</b>, and we can use a similar
 
 
 ````js
-function smallestSubarrayWithGivenSum(arr, s) {
-  //sliding window, BUT the window size is not fixed
-  let windowSum = 0
-  let minLength = Infinity
-  let windowStart = 0
-  
-  //First, we will add-up elements from the beginning of the array until their sum becomes greater than or equal to S.
-  for(windowEnd = 0; windowEnd < arr.length; windowEnd++) {
-    
-    //add the next element
-    windowSum += arr[windowEnd]
-    
-    //shrink the window as small as possible
-    //until windowSum is small than s
-    while(windowSum >= s) {
-      //These elements will constitute our sliding window. We are asked to find the smallest such window having a sum greater than or equal to S. We will remember the length of this window as the smallest window so far.
-      //After this, we will keep adding one element in the sliding window (i.e., slide the window ahead) in a stepwise fashion.
-      //In each step, we will also try to shrink the window from the beginning. We will shrink the window until the windows sum is smaller than S again. This is needed as we intend to find the smallest window. This shrinking will also happen in multiple steps; in each step, we will do two things:
-      //Check if the current window length is the smallest so far, and if so, remember its length.
-      minLength = Math.min(minLength, windowEnd - windowStart + 1)
-      
-      //Subtract the first element of the window from the running sum to shrink the sliding window.
-      windowSum -= arr[windowStart]
-      windowStart++
+Expand window to reach target, then shrink it to find minimum length.
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0;
+        int sumOfCurrentWindow = 0;
+        int res = Integer.MAX_VALUE;
+        for(int right = 0;right <= nums.length;right++){
+            sumOfCurrentWindow += nums[right];
+        }
+
+        while(sumOfCurrentWindow >= target){
+            res = Math.Min(res, right - left + 1);
+            sumOfCurrentWindow -= nums[left];
+        }
+        return size == Integer.MAX_VALUE ? 0 : size;
+        
     }
-  } 
-  
-  if(minLength === Infinity) {
-    return 0
-  }
-  return minLength
-}
+} 
 
 
 smallestSubarrayWithGivenSum([2, 1, 5, 2, 3, 2], 7)//2
@@ -205,44 +192,7 @@ This problem follows the <b>Sliding Window pattern</b>, and we can use a similar
 6. At the end of each step, well check if the current window length is the longest so far, and if so, remember its length.
 
 ````js
-function longestSubstringWithKdistinct(str, k) {
-   // Given a string, find the length of the longest substring in it with no more than K distinct characters.
-  let windowStart = 0
-  let maxLength = 0
-  let charFrequency = {}
-
-  //in the following loop we'll try to extend the range [windowStart, windowEnd]
-  for(let windowEnd = 0; windowEnd < str.length; windowEnd++) {
-    const endChar = str[windowEnd]
-    if(!(endChar in charFrequency)) {
-      charFrequency[endChar] = 0
-    }
-    charFrequency[endChar]++
-    //shrink the window until we are left with k distinct characters 
-    //in the charFrequency Object
-    
-    while(Object.keys(charFrequency).length > k) {
-      //insert characters from the beginning of the string until we have 'K' distinct characters in the hashMap 
-    //these characters will consitutue our sliding window.  We are asked to find the longest such window having no more that K distinct characters.  We will remember the length of the window as the longest window so far
-    //we will keep adding on character in the sliding window in a stepwise fashion
-      //in each step we will try to shrink the window from the beginning if the count of distinct characters in the hashmap is larger than K. We will shrink the window until we have no more that K distinct characters in the HashMap
-      const startChar = str[windowStart]
-      charFrequency[startChar]--
-      //while shrinking , we will decrement the characters frequency going out of the window and remove it from the HashMap if it's frequency becomes zero
-      if(charFrequency[startChar] === 0) {
-        delete charFrequency[startChar]
-      }
-      windowStart++
-    }
-    //after each step we will check if the current window length is the longest so far, and if so, remember it's length
-    maxLength = Math.max(maxLength, windowEnd - windowStart + 1)
-  }
-    return maxLength
-};
-
-longestSubstringWithKdistinct("araaci", 2)//4, The longest substring with no more than '2' distinct characters is "araa".
-longestSubstringWithKdistinct("araaci", 1)//2, The longest substring with no more than '1' distinct characters is "aa".
-longestSubstringWithKdistinct("cbbebi", 3)//5, The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
+f
 ````
 - The above algorithms time complexity will be `O(N)`, where `N` is the number of characters in the input string. The outer for loop runs for all characters, and the inner while loop processes each character only once; therefore, the time complexity of the algorithm will be `O(N+N)`, which is asymptotically equivalent to `O(N)`
 - The algorithms space complexity is `O(K)`, as we will be storing a maximum of `K+1` characters in the <b>HashMap</b>.
