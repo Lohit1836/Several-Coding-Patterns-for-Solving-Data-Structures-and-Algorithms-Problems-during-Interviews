@@ -2,6 +2,8 @@
 In many problems dealing with an array (or a <b>LinkedList</b>), we are asked to find or calculate something among all the contiguous subarrays (or sublists) of a given size. For example, take a look at this problem:
 
 ### Find Averages of Sub Arrays
+You are given an integer array nums consisting of n elements, and an integer k.
+Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value. Any answer with a calculation error less than 10-5 will be accepted.
 
 Example 1:
 Input: nums = [1,12,-5,-6,50,3], k = 4
@@ -11,6 +13,8 @@ Example 2:
 
 Input: nums = [5], k = 1
 Output: 5.00000
+
+
 https://leetcode.com/problems/maximum-average-subarray-i/
 
 #### Can we find a better solution? Do you see any inefficiency in the above approach?
