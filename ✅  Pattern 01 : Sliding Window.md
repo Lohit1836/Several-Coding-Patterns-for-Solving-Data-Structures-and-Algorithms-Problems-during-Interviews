@@ -14,7 +14,6 @@ Example 2:
 Input: nums = [5], k = 1
 Output: 5.00000
 
-
 https://leetcode.com/problems/maximum-average-subarray-i/
 
 #### Can we find a better solution? Do you see any inefficiency in the above approach?
