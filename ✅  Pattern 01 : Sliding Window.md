@@ -212,37 +212,33 @@ In this problem, we need to find the length of the longest subarray with no more
 This transforms the current problem into Longest Substring with <b>K Distinct Characters</b> where `K=2`.
 ### Map Class Solution
 ````js
-function totalFruit (fruits) {
-  let windowStart = 0
-  let windowMax = 0
-  let fruitMap = new Map()
+class Solution {
+    public int totalFruit(int[] fruits) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int left = 0, maxFruits = 0;
 
-  
-  //1. try to extend the window range
-  for(let windowEnd = 0; windowEnd < fruits.length; windowEnd++) {
-    let endFruit = fruits[windowEnd]
-    
-    fruitMap.set(endFruit, fruitMap.get(endFruit)+1 || 1)
-    
-    
-    //2. Shrink the sliding window, until we are left with 2 fruits in the fruitMap
-    while(fruitMap.size > 2) {
-      let startFruit = fruits[windowStart]
-      
-      fruitMap.set(startFruit, fruitMap.get(startFruit)-1)
-      
-      
-      if(fruitMap.get(startFruit) === 0){
-        fruitMap.delete(startFruit)
-      }
-      windowStart++
+        for (int right = 0; right < fruits.length; right++) {
+            int fruit = fruits[right];
+            map.put(fruit, map.getOrDefault(fruit, 0) + 1);
+
+            // If more than 2 distinct types, shrink window
+            while (map.size() > 2) {
+                int leftFruit = fruits[left];
+                map.put(leftFruit, map.get(leftFruit) - 1);
+                if (map.get(leftFruit) == 0) {
+                    map.remove(leftFruit);
+                }
+                left++;
+            }
+
+            // Window is valid (<=2 distinct), update max
+            maxFruits = Math.max(maxFruits, right - left + 1);
+        }
+
+        return maxFruits;
     }
-    
-    windowMax = Math.max(windowMax, windowEnd - windowStart + 1)
-  }
-  
-  return windowMax   
-};
+}
+
 
 totalFruit ([3,3,3,1,2,1,1,2,3,3,4])
 //5
