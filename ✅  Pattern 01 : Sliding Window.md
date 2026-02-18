@@ -1,7 +1,7 @@
 # Pattern 1: Sliding Window
 In many problems dealing with an array (or a <b>LinkedList</b>), we are asked to find or calculate something among all the contiguous subarrays (or sublists) of a given size. For example, take a look at this problem:
 
-### Find Averages of Sub Arrays
+###1) Find Averages of Sub Arrays
 You are given an integer array nums consisting of n elements, and an integer k.
 Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value. Any answer with a calculation error less than 10-5 will be accepted.
 
@@ -57,38 +57,9 @@ class Solution {
 }
 
 ````
-## Maximum Sum Subarray of Size K (easy)
+## 2) Maximum Sum Subarray of Size K (easy)
 https://leetcode.com/problems/largest-subarray-length-k/
 > Given an array of positive numbers and a positive number `K`, find the maximum sum of any contiguous subarray of size `K`.
-### Brute Force
-
-A basic brute force solution will be to calculate the sum of all `K` sized subarrays of the given array to find the subarray with the highest sum. We can start from every index of the given array and add the next `K` elements to find the subarrays sum.
-````js
-function maxSubarrayOfSizeK(arr, k) {
-  //brute force
-  let maxSum = 0
-  let windowSum = 0
-  
-  //loop through array
-  for(let i = 0; i < arr.length -k + 1; i++) {
-    
-    //keep track of sum in current window
-    windowSum = 0
-    for(let j = i; j < i + k; j++) {
-      windowSum += arr[j]
-    }
-    
-    //if currentWindowSum is > maxWindowSum
-    //set currentWindwoSum to maxWindowSum
-    maxSum = Math.max(maxSum, windowSum)
-  }
-  return maxSum
-}
-
-maxSubarrayOfSizeK(3, [2, 1, 5, 1, 3, 2])//9
-maxSubarrayOfSizeK(2, [2, 3, 4, 1, 5])//7
-````
-- Time complexity will be `O(N*K)`, where `N` is the total number of elements in the given array
 
 ### Sliding Window Approach
 If you observe closely, you will realize that to calculate the sum of a contiguous subarray, we can utilize the sum of the previous subarray. For this, consider each subarray as a <b>Sliding Window</b> of size `K`. To calculate the sum of the next subarray, we need to slide the window ahead by one element. So to slide the window forward and calculate the sum of the new position of the <i>sliding window</i>, we need to do two things:
@@ -175,7 +146,7 @@ smallestSubarrayWithGivenSum([3, 4, 1, 1, 6], 8)//3
 - The time complexity of the above algorithm will be `O(N)`. The outer for loop runs for all elements, and the inner while loop processes each element only once; therefore, the time complexity of the algorithm will be `O(N+N)`), which is asymptotically equivalent to `O(N)`.
 - The algorithm runs in constant space `O(1)`.
 
-## Longest Substring with K Distinct Characters (medium)
+## 4) Longest Substring with K Distinct Characters (medium)
 https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 
 >Given a string, find the length of the <b>longest substring</b> in it with <b>no more than `K` distinct characters</b>.
@@ -192,12 +163,40 @@ This problem follows the <b>Sliding Window pattern</b>, and we can use a similar
 6. At the end of each step, well check if the current window length is the longest so far, and if so, remember its length.
 
 ````js
-f
+class Solution {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        if (k == 0 || s == null || s.length() == 0) return 0;
+        
+        Map<Character, Integer> map = new HashMap<>();
+        int left = 0, maxLen = 0;
+        
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            
+            // Shrink the window until we have <= k distinct characters
+            while (map.size() > k) {
+                char leftChar = s.charAt(left);
+                map.put(leftChar, map.get(leftChar) - 1);
+                if (map.get(leftChar) == 0) {
+                    map.remove(leftChar);
+                }
+                left++;
+            }
+            
+            // Update max length
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+        
+        return maxLen;
+    }
+}
+
 ````
 - The above algorithms time complexity will be `O(N)`, where `N` is the number of characters in the input string. The outer for loop runs for all characters, and the inner while loop processes each character only once; therefore, the time complexity of the algorithm will be `O(N+N)`, which is asymptotically equivalent to `O(N)`
 - The algorithms space complexity is `O(K)`, as we will be storing a maximum of `K+1` characters in the <b>HashMap</b>.
 
-## 🔎 Fruits into Baskets (medium)
+## 5) 🔎 Fruits into Baskets (medium)
 https://leetcode.com/problems/fruit-into-baskets/
 
 > Given an array of characters where each character represents a fruit tree, you are given <b>two baskets</b>, and your goal is to put the <b>maximum number of fruits in each basket</b>. The only restriction is that <b>each basket can have only one type of fruit</b>.
